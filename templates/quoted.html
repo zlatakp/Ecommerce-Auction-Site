@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+<form action = "/quote" method = "get">
+    <h1> {{companyName}} ({{stockname}})</h1>
+    <div class = "form-group">
+        USD${{price}}
+    </div>
+
+</form>
+
+{% endblock %}

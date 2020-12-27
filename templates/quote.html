@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+
+{% block main %}
+<form action = "/quote" method = "post">
+    <div class = "form-group">
+        <input type = "text" class ="form-control"  name = "symbol" placeholder = "symbol">
+    </div>
+    <button type="submit">Search</button>
+
+</form>
+
+{% endblock %}
