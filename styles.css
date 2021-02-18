@@ -16,7 +16,7 @@ a {
     color: 	rgba(0,0,0,0.87);
     text-decoration: none;
 }
-input[type = text] {
+input[type = text].searchbar_field {
     border-radius:25px;
     width: 550px;
     height: 42px;
@@ -37,18 +37,18 @@ input[type = text] {
     padding-top: 30px;
 }
 
-input[type="text"]:hover {
+input[type="text"].searchbar_field:hover {
     outline: none;
     box-shadow: 0px 0px 5px 1px #d6d5d5;
 }
 
 
-input[type="text"]:focus {
+input[type="text"].searchbar_field-bar:focus {
     outline: none;
     box-shadow: 0px 0px 5px 1px #d6d5d5;
 }
 
-input[type = "submit"] {
+input[type = "submit"].searchbar_field {
     font-family: arial, sans-serif;
     outline: none;
     padding-right: 16px;
@@ -61,7 +61,7 @@ input[type = "submit"] {
     border: none;
 }
 
-input[type = "submit"]:hover {
+input[type = "submit"].searchbar_field:hover {
     border: 1px solid;
     border-color: #d6d5d5;
     box-shadow: 0px 1px 1px #eff0f1;
@@ -75,10 +75,51 @@ input[type = "submit"]:hover {
 }
 
 .advanced {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    background-color:#f1f1f1;;
+    padding-left: 15px;
+    height: 60px;
+    width: 100%;
+
+}
+
+.advanced_title {
+    color: #d93025;
+    margin-top: 85px;
+    margin-right: 35px;
+    margin-bottom: 25px;
+    margin-left: 35px;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+}
+
+.advanced_form {
     display: block;
-    position: absolute
-    padding-top: 10px;
-    background-color:#e5e5e5;
+    margin-right: 2%;
+    margin-bottom: 0px;
+    margin-left: 22px;
+}
+
+.advanced_subtitle {
+    
+    margin-top: 40px;
+    font-family: arial, sans-serif;
+    color: #333;
+    font-size: 17px;
+}
+
+.advanced_label {
+    margin-left: 10px;
+    font-size: 100%;
+}
+.advanced_line {
+    display: block;
+    border-bottom: 1px solid #ebebeb;
+}
 
 
 
@@ -89,9 +130,7 @@ input[type = "submit"]:hover {
     font-family: arial, sans-serif;
     left: 105px;
     top: -15px;
-
 }
-
 #search_icon {
     width: auto;
     height: 17.5px;
@@ -100,11 +139,82 @@ input[type = "submit"]:hover {
     left: -277px;
 }
 
+.body_advanced {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
 .advanced_logo{
-    width: 100px;
+    width: 92px;
     height: auto;
     position: relative;
     left: 0px;
+    top: 0px;
+}
+
+input[type = "text"].advanced_form{
+    border-radius: 1px;
+    border-width: 1px;
+    border-color: #d9d9d9;
+    border-top-color: #c0c0c0;
+    font-size: 13px;
+    width: auto;
+    height: 25px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 8px;
+    padding-left: 8px;
+    margin: 20px;
+    font-family: Arial;
+}
+
+input[type = "text"].advanced_form:focus{
+    outline: none;
+    border: 1px solid blue;
+}
+
+.advanced_input_label {
+    display: inline-grid;
+    grid-auto-rows: 70px;
+    margin-left: 22px;
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: 100;
 }
 
 
+.advanced_input {
+    display: inline-grid;
+    grid-auto-rows: 70px;
+    margin-left: -10px;
+    width: 50%;
+    grid-template-areas: 
+    "a"
+    "b"
+    "c"
+    "d"
+    "e";
+}
+
+
+
+#advanced_submit {
+    grid-area: e;
+    justify-self: end;
+    color: white;
+    background-color: #4d90fe;
+    font-family: arial;
+    border-radius: 2px;
+    border: 1px solid #3079ed;
+    font-weight: bold;
+    font-size: 11px;
+    height: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+    width: fit-content;
+    bottom: -26.5px;
+    outline: none;
+    margin-left: 22px;
+    margin-right: 20px;
+}

@@ -5,23 +5,38 @@
         <link href="styles.css" rel = "stylesheet">
     </head>
 
-    <body>
+    <body class = "body_advanced">
         <div class = "upper-right">
             <a href = "search.html">Google Search</a>
         </div>
         <div class = "advanced">
-            <img id = "logo" class = "advanced_logo" src = "logo.png">
+            <a href = "search.html"><img id = "logo" class = "advanced_logo" src = "logo.png"></a>
         </div>
-        
-        <form action="https://google.com/search">
-            <div class = "search-bar">
-                <input type="text" name="q">
-                <div class="buttons">
-                    <input type="submit" value = "Google Search" aria-label="Google Search">
-                    <input type="submit" value = "I'm Feeling Lucky" aria-label="I'm Feeling Lucky">
-                    
+        <div class = "advanced_title">
+            <label class = "advanced_label">Advanced Search</label>
+        </div>
+        <div class = "advanced_line"></div>
+        <div class = "advanced_form">
+            <form action ="https://google.com/search">
+                <span class = "advanced_subtitle advanced_form">Find pages with...</span>
+                <div class = "form_container">
+                    <div class = "advanced_input_label">
+                        <label for = "all_words">all these words:</label>
+                        <label for = "exact_words">this exact word or phrase:</label>
+                        <label for = "any_words">any of these words:</label>
+                        <label for = "none_words">none of these words:</label>
+                    </div>
+                    <div class = "advanced_input">
+                        <input class = "advanced_form" type = "TEXT" name = "all_words" id = "all_words">
+                        <input class = "advanced_form" type = "TEXT" name = "exact_words" id = "exact_words">
+                        <input class = "advanced_form" type = "TEXT" name = "any_words" id = "any_words">
+                        <input class = "advanced_form" type = "TEXT" name = "none_words" id = "none_words">
+                        <input id = "advanced_submit" type = "submit" value = "Advanced Search">
+                    </div>
                 </div>
-            </div>
-        </form>
+
+            </form>
+        </div>
+
     </body>
 </html>
