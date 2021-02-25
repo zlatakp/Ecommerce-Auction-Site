@@ -17,6 +17,7 @@ a {
     text-decoration: none;
 }
 input[type = text].searchbar_field {
+    outline: none;
     border-radius:25px;
     width: 550px;
     height: 42px;
