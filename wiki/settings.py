@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django_markdown2',
     'encyclopedia',
     'django.contrib.admin',
     'django.contrib.auth',
