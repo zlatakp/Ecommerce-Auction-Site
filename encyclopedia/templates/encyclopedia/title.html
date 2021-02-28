@@ -1,9 +1,9 @@
-{% extends "encyclopedia/layout.html"}
+{% extends "encyclopedia/layout.html" %}
 {% block title %}
     {{title}}
 
 {% endblock %}
 
 {% block body %}
-    {{entry}}
+    {% load md2 %}{{entry|markdown}}
 {% endblock %}
