@@ -1,22 +1,20 @@
 {% extends "encyclopedia/layout.html" %}
-
 {% block title %}
-Create a New Page 
+    Edit Page
 {% endblock %}
 
 {% block body %}
-
-<form method = "POST" action = "/wiki/newpage/">
+{{title}}
+<form method = "POST" action = "/wiki/{{title}}/">
     {% csrf_token %}
     {% for field in form %}
-        <div class = "newpage_labels" >
+        <div class = "newpage_labels">
             <label for ="{{field.auto_id}}">{{field.label}}</label>
         </div>
         {{field}}
-
     {% endfor %}
     <div>
-        <input type = "submit" value = "Create New Page">
+        <input type = "submit" value = "Update the Page">
     </div>
     
 </form>
