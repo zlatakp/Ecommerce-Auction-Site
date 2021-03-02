@@ -1,9 +1,9 @@
 {% extends "encyclopedia/layout.html" %}
 {% block title %}
-    {{title}}
-
+    Error
 {% endblock %}
-
 {% block body %}
-    {% load md2 %}{{entry|markdown}}
+
+    <p class = 'main error'>{{title}} page was not found.</p>
+
 {% endblock %}
