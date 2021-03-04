@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from . import models
 from django import forms
+from random import randint
 
 from . import util
 app_name = 'wiki'
@@ -82,6 +83,13 @@ def editpage(request):
             "form": form,
             "title": title
         })
+def random(request):
+    all_entries = util.list_entries()
+    low = 0
+    high = len(all_entries) - 1
+    title = all_entries[randint(low, high)]
+    return redirect("/wiki/"+title)
+    
 
         
 
