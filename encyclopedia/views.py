@@ -17,7 +17,7 @@ def index(request):
         response = []
         for entry in all_entries:
             if entry.upper() == q.upper():
-                response = redirect(('/wiki/'+entry))
+                return redirect('/wiki/'+entry)
             elif q.upper() in entry.upper():
                 response.append(entry)
         return render(request, "encyclopedia/search.html", {
