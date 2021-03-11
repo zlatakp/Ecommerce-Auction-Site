@@ -1,15 +1,32 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User
+from .models import User, Category, Listing
 
 
 def index(request):
     return render(request, "auctions/index.html")
 
+def create_new(request):
+    if request.method == "POST":
+        title = request.POST["title"]
+        start_bid = request.POST["start_bid"]
+        description = request.POST["description"]
+        category = request.POST["category"]
+        return 
+    else:
+        categories = Category.objects.all()
+        return render(request, "auctions/createlisting.html", {
+            "categories": categories
+        })
+def listing(request, list_id):
+    title = Listing.objects.filter(id = list_id)
+    return render(request, "auctions/listing.html", {
+        "title": title
+    })
 
 def login_view(request):
     if request.method == "POST":
