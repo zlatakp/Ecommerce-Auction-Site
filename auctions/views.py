@@ -8,13 +8,11 @@ from django import forms
 
 class NewListing(forms.Form):
     categories = list(Category.objects.values_list())
-
-    
     title = forms.CharField(label = "Title", max_length = 100, required = True)
     start_bid = forms.DecimalField(label = "Starting Bid", decimal_places = 2, required = True)
     category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category" )
     description = forms.CharField(widget = forms.Textarea)
-    url = forms.URLField()
+    url = forms.URLField(required = False)
     
 
 
@@ -28,7 +26,10 @@ def create_new(request):
         start_bid = request.POST["start_bid"]
         description = request.POST["description"]
         category = request.POST["category"]
-        return 
+        url = request.POST["url"]
+        return render(request, "auctions/listing.html", {
+            "title": url
+        })
     else:
         form = NewListing()
         categories = Category.objects.all()
