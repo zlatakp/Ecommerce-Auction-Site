@@ -8,7 +8,7 @@ class User(AbstractUser):
 class Category(models.Model):
     name = models.CharField(max_length = 50, default = "")
     def __str__(self):
-        return f"{self.name} category"
+        return self.name
 class Listing(models.Model):
     title = models.CharField(max_length = 100)
     start_bid = models.IntegerField()

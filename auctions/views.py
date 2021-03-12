@@ -3,14 +3,26 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
 from .models import User, Category, Listing
+from django import forms
+
+class NewListing(forms.Form):
+    categories = list(Category.objects.values_list())
+
+    
+    title = forms.CharField(label = "Title", max_length = 100, required = True)
+    start_bid = forms.DecimalField(label = "Starting Bid", decimal_places = 2, required = True)
+    category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category" )
+    description = forms.CharField(widget = forms.Textarea)
+    url = forms.URLField()
+    
 
 
 def index(request):
     return render(request, "auctions/index.html")
 
 def create_new(request):
+
     if request.method == "POST":
         title = request.POST["title"]
         start_bid = request.POST["start_bid"]
@@ -18,9 +30,11 @@ def create_new(request):
         category = request.POST["category"]
         return 
     else:
+        form = NewListing()
         categories = Category.objects.all()
         return render(request, "auctions/createlisting.html", {
-            "categories": categories
+            "categories": categories,
+            "form": form
         })
 def listing(request, list_id):
     title = Listing.objects.filter(id = list_id)

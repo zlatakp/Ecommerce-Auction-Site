@@ -2,20 +2,13 @@
 {% block body %}
 <form method = "POST" action = "/newlisting">
     {% csrf_token %}
-    <label for = "title">Title</label>
-    <input type = "TEXT" name = "title" id = "title">
-    <label for = "start_bid">Starting Bid</label>
-    <input type = "number" min = "0.00" step = "0.01" id = "start_bid" name = "start_bid">
-    <label for = "category">Category</label>
-    <select name = "category" id = "category">
-        {% for category in categories %}
-            <option value = '{{category}}'>{{category}}</option>
-        {% endfor %}
-    </select>
-    <input type = "TEXTAREA" name = "description" id = "description">
-    <label for = "url">Link to an image (optional)</label>
-    <input type = "url" value = "" name = "url" id = "url">
-    <input type = "SUBMIT" value = "Create Listing">
+    {% for field in form %}
+        <div class = "form_div">
+            {{field}}
+        </div>
+    {% endfor %}
+    <div class = "form_div">
+        <input type = "SUBMIT" value = "Create Listing">
+    </div>  
 </form>
-
 {% endblock %}
