@@ -1,6 +1,5 @@
 body {
     padding: 10px;
-
 }
 
 .form_div {
@@ -9,4 +8,7 @@ body {
 
 .form_btn {
     margin: 5px;
+}
+.listing_bid {
+    font-style: italic !important;
 }

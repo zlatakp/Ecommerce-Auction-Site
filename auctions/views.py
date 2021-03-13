@@ -15,21 +15,23 @@ class NewListing(forms.Form):
     url = forms.URLField(required = False)
     
 
-
 def index(request):
     return render(request, "auctions/index.html")
 
 def create_new(request):
 
     if request.method == "POST":
-        title = request.POST["title"]
-        start_bid = request.POST["start_bid"]
-        description = request.POST["description"]
-        category = request.POST["category"]
-        url = request.POST["url"]
-        return render(request, "auctions/listing.html", {
-            "title": url
-        })
+        form = NewListing(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            start_bid = form.cleaned_data["start_bid"]
+            description = form.cleaned_data["description"]
+            category_id = form.cleaned_data["category"]
+            category = Category.objects.get(id = category_id)
+            url = form.cleaned_data["url"]
+            listing = Listing(title = title, start_bid = start_bid, url = url, description = description, category = category)
+            listing.save()
+            return redirect("listing/"+str(listing.id))
     else:
         form = NewListing()
         categories = Category.objects.all()
@@ -38,9 +40,14 @@ def create_new(request):
             "form": form
         })
 def listing(request, list_id):
-    title = Listing.objects.filter(id = list_id)
+    listing = Listing.objects.get(id = list_id)
+    
     return render(request, "auctions/listing.html", {
-        "title": title
+        "title": listing.title,
+        "start_bid": listing.start_bid,
+        "category": listing.category,
+        "description": listing.description,
+        "url": listing.url
     })
 
 def login_view(request):
