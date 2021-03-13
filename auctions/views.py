@@ -16,7 +16,9 @@ class NewListing(forms.Form):
     
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "listings": Listing.objects.all()
+    })
 
 def create_new(request):
 
@@ -44,7 +46,7 @@ def listing(request, list_id):
     
     return render(request, "auctions/listing.html", {
         "title": listing.title,
-        "start_bid": listing.start_bid,
+        "start_bid": "${:,.2f}".format(listing.start_bid),
         "category": listing.category,
         "description": listing.description,
         "url": listing.url

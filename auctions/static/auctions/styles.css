@@ -9,6 +9,17 @@ body {
 .form_btn {
     margin: 5px;
 }
-.listing_bid {
-    font-style: italic !important;
+
+.start_bid {
+    font-style: bold;
+
+}
+.current_bid {
+    font-style: italic;
+    color: red;
+}
+
+.text-form {
+    font-family: 'Times New Roman', Times, serif;
+    padding: 5px;
 }

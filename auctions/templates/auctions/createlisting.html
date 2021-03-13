@@ -1,4 +1,7 @@
 {% extends "auctions/layout.html" %}
+{% block script %}
+
+{% endblock %}
 {% block body %}
 <form method = "POST" action = "/newlisting">
     {% csrf_token %}
@@ -9,8 +12,13 @@
             {{field}}
         </div>
     {% endfor %}
+    
     <div class = "form_div">
-        <input type = "SUBMIT" value = "Create Listing">
+        <input class = "btn btn-success" type = "SUBMIT" value = "Create Listing">
     </div>  
 </form>
+<script>
+    $("form > div").addClass("col-7 text-form")
+    $("div > input, div > select, div > textarea").addClass("form-control")
+</script>
 {% endblock %}
