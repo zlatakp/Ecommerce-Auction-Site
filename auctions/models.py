@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class User(AbstractUser):
-    pass
 
 class Category(models.Model):
     name = models.CharField(max_length = 50, default = "")
@@ -17,6 +15,10 @@ class Listing(models.Model):
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = "category_listing", default  = "")
     def __str__(self):
         return f"{self.title} starting at ${self.start_bid}."
+class User(AbstractUser):
+    watching = models.ManyToManyField(Listing, blank=True, related_name = "WatchedBy")
+    
+    pass
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = "same_start_bid", default = "")
@@ -24,5 +26,6 @@ class Bid(models.Model):
     final_bid = models.IntegerField(default = 0)
     pass
 
+    
 class Comment(models.Model):
     pass 

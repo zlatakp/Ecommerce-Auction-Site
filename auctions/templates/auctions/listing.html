@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+
 <h1>{{title}}</h1>
 <p class = "start_bid">Starting at {{start_bid}}</p>
 <p class = "current_bid">Current bid:</p>
@@ -9,10 +10,14 @@
 <img src = "{{url}}" alt = "Listing Image">
 {% endif %}
 {% if user.is_authenticated %}
-<div>
-    <button class = "btn btn-success">Add to Watchlist</button>
-</div>
-
+    <div>
+        <form action = "{% url 'add' listing_id %}" method = "POST">
+            {% csrf_token %}
+            <input type = "hidden" value = "{{listing_id}}" name = "listing_id">
+            <input type = "SUBMIT" class = "btn btn-success" value = "Add to Watch List">
+        </form>
+           </div>
+    {{test}}
 {% endif %}
 
 {% endblock %}

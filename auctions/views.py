@@ -43,14 +43,25 @@ def create_new(request):
         })
 def listing(request, list_id):
     listing = Listing.objects.get(id = list_id)
-    
+    user_id = request.user.id
+    watching = User.objects.get(id = user_id).watching.values_list
     return render(request, "auctions/listing.html", {
         "title": listing.title,
+        "listing_id": listing.id,
         "start_bid": "${:,.2f}".format(listing.start_bid),
         "category": listing.category,
         "description": listing.description,
-        "url": listing.url
+        "url": listing.url,
+        "test": watching
     })
+
+    
+def add(request, list_id):
+    if request.method == "POST":
+        user_id = request.user.id
+        listing = Listing.objects.get(id = list_id)
+    else:
+        return HttpResponseRedirect(reverse("listing", args = (list_id,) ))
 
 def login_view(request):
     if request.method == "POST":
