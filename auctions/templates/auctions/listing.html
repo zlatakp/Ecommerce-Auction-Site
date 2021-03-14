@@ -2,22 +2,35 @@
 
 {% block body %}
 
-<h1>{{title}}</h1>
+
+
+{{test}}
+<h1>{{listing.title}}</h1>
 <p class = "start_bid">Starting at {{start_bid}}</p>
 <p class = "current_bid">Current bid:</p>
-<p>{{description}}</p>
-{% if url != "" %}
-<img src = "{{url}}" alt = "Listing Image">
+<p>{{listing.description}}</p>
+{% if listing.url != "" %}
+<img src = "{{listing.url}}" alt = "Listing Image">
 {% endif %}
 {% if user.is_authenticated %}
     <div>
-        <form action = "{% url 'add' listing_id %}" method = "POST">
+        <form id = "form" action = "{% url 'add' listing.id %}" method = "POST">
             {% csrf_token %}
-            <input type = "hidden" value = "{{listing_id}}" name = "listing_id">
-            <input type = "SUBMIT" class = "btn btn-success" value = "Add to Watch List">
+            <input type = "hidden" value = "{{listing.id}}" name = "listing_id">
+            <input id = "submit_button" type = "SUBMIT" class = "btn btn-success" value = "Add to Watch List">
         </form>
            </div>
-    {{test}}
 {% endif %}
+<script>
+    $(document).ready(function() {
+        if ({{watching_status}}) {
+            $("#submit_button").removeClass("btn-success")
+            .addClass("btn-danger")
+            .val("Remove from Watch List")
+
+            $('#form').attr('action', '{% url "remove" listing.id %}')
+    }
+    })  
+</script>
 
 {% endblock %}

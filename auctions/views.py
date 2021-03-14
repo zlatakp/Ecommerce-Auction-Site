@@ -42,26 +42,35 @@ def create_new(request):
             "form": form
         })
 def listing(request, list_id):
+    
     listing = Listing.objects.get(id = list_id)
-    user_id = request.user.id
-    watching = User.objects.get(id = user_id).watching.values_list
+    user = User.objects.get(id = request.user.id)
+    watching_status = user.watching.filter(id = list_id).exists()
     return render(request, "auctions/listing.html", {
-        "title": listing.title,
-        "listing_id": listing.id,
+        "listing": listing,
         "start_bid": "${:,.2f}".format(listing.start_bid),
-        "category": listing.category,
-        "description": listing.description,
-        "url": listing.url,
-        "test": watching
+        "watching_status": str(watching_status).lower()
     })
 
     
 def add(request, list_id):
     if request.method == "POST":
-        user_id = request.user.id
+        user = User.objects.get(id = request.user.id)
         listing = Listing.objects.get(id = list_id)
+        user.watching.add(listing)
+        return HttpResponseRedirect(reverse("listing", args = (list_id,)))
     else:
         return HttpResponseRedirect(reverse("listing", args = (list_id,) ))
+
+def remove(request, list_id):
+    if request.method == "POST":
+        user = User.objects.get(id = request.user.id)
+        listing = Listing.objects.get(id = list_id)
+        user.watching.remove(listing)
+        return HttpResponseRedirect(reverse("listing", args = (list_id,)))
+    else:
+        return HttpResponseRedirect(reverse("listing", args = (list_id,)))
+
 
 def login_view(request):
     if request.method == "POST":
