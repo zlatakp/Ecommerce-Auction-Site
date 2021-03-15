@@ -42,9 +42,8 @@ def create_new(request):
             "form": form
         })
 def listing(request, list_id):
-    
     listing = Listing.objects.get(id = list_id)
-    user = User.objects.get(id = request.user.id)
+    user = User.objsects.get(id = request.user.id)
     watching_status = user.watching.filter(id = list_id).exists()
     return render(request, "auctions/listing.html", {
         "listing": listing,
