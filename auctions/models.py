@@ -22,9 +22,12 @@ class User(AbstractUser):
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = "same_start_bid", default = "")
-    start_bid = models.ForeignKey(Listing, on_delete = models.CASCADE, default = 0)
-    final_bid = models.IntegerField(default = 0)
+    current_bid = models.DecimalField(default = 0.00, decimal_places = 2, max_digits=100000)
+    def __str__(self):
+        return f"Current bid on {self.listing.title} is ${self.current_bid}"
     pass
+
+
 
     
 class Comment(models.Model):

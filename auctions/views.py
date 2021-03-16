@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import User, Category, Listing
+from .models import User, Category, Listing, Bid
 from django import forms
 
 class NewListing(forms.Form):
@@ -13,7 +13,9 @@ class NewListing(forms.Form):
     category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category" )
     description = forms.CharField(widget = forms.Textarea)
     url = forms.URLField(required = False)
-    
+
+class NewBid(forms.Form):
+    bid = forms.DecimalField(label = "Your Bid", min_value=0.00, decimal_places=2)
 
 def index(request):
     return render(request, "auctions/index.html", {
@@ -33,6 +35,9 @@ def create_new(request):
             url = form.cleaned_data["url"]
             listing = Listing(title = title, start_bid = start_bid, url = url, description = description, category = category)
             listing.save()
+            bid = Bid(listing = listing, current_bid = start_bid)
+            bid.save()
+
             return redirect("listing/"+str(listing.id))
     else:
         form = NewListing()
@@ -43,11 +48,15 @@ def create_new(request):
         })
 def listing(request, list_id):
     listing = Listing.objects.get(id = list_id)
-    user = User.objsects.get(id = request.user.id)
+    bid = Bid.objects.get(listing = listing)
+    user = User.objects.get(id = request.user.id)
     watching_status = user.watching.filter(id = list_id).exists()
+    form = NewBid()
     return render(request, "auctions/listing.html", {
+        "form": form,
         "listing": listing,
         "start_bid": "${:,.2f}".format(listing.start_bid),
+        "current_bid": "${:,.2f}".format(bid.current_bid),
         "watching_status": str(watching_status).lower()
     })
 

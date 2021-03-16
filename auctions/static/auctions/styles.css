@@ -23,3 +23,7 @@ body {
     font-family: 'Times New Roman', Times, serif;
     padding: 5px;
 }
+
+.bid_input.form-control {
+    width: 100px;
+}
