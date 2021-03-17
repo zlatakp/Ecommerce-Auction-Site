@@ -47,18 +47,19 @@ def create_new(request):
             "form": form
         })
 def listing(request, list_id):
-    listing = Listing.objects.get(id = list_id)
-    bid = Bid.objects.get(listing = listing)
-    user = User.objects.get(id = request.user.id)
-    watching_status = user.watching.filter(id = list_id).exists()
-    form = NewBid()
-    return render(request, "auctions/listing.html", {
-        "form": form,
-        "listing": listing,
-        "start_bid": "${:,.2f}".format(listing.start_bid),
-        "current_bid": "${:,.2f}".format(bid.current_bid),
-        "watching_status": str(watching_status).lower()
-    })
+    if request.method == "GET":
+        listing = Listing.objects.get(id = list_id)
+        bid = Bid.objects.get(listing = listing)
+        user = User.objects.get(id = request.user.id)
+        watching_status = user.watching.filter(id = list_id).exists()
+        form = NewBid()
+        return render(request, "auctions/listing.html", {
+            "form": form,
+            "listing": listing,
+            "start_bid": "${:,.2f}".format(listing.start_bid),
+            "current_bid": "${:,.2f}".format(bid.current_bid),
+            "watching_status": str(watching_status).lower()
+        })
 
     
 def add(request, list_id):

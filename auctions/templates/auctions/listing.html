@@ -6,21 +6,26 @@
 
 {{test}}
 <h1>{{listing.title}}</h1>
+<div class = "left-padding">
 <p class = "start_bid">Starting at {{start_bid}}</p>
 <p class = "current_bid">Current bid: {{current_bid}}</p>
 {% if user.is_authenticated %}
     <form id = "bid_form" action = "" method = "POST">
         {% csrf_token %}
-        <div class = "form_div col-xs-2" id = "bid_div">
-        {% for field in form %}
-  
-                {{field.label}} {{field}}
-        {% endfor %}
-        <input type = "SUBMIT" class = "btn btn-primary" value = "Bid">
+        <div class = "row" id = "row">
+            <div class = "col-xs-2 form-group form_div" id = "bid_div">
+                {% for field in form %}
+                    {{field.label}} {{field}}
+                {% endfor %}
+            </div>
+            <div class = "col-xs-2 form-group form_div">
+                <br>
+                <input type = "SUBMIT" class = "btn btn-primary" value = "Bid">
+            </div>
         </div>
     </form>
     <script>
-        $("#id_bid").addClass("form-control bid_input")
+        $("#id_bid").addClass("form-control form-group form-div col-xs-2 bid_input left-padding")
         
     </script>
 
@@ -29,8 +34,10 @@
 
 
 
+<form class = "form-div">
+    <p>{{listing.description}}</p>
+</form>
 
-<p>{{listing.description}}</p>
 {% if listing.url != "" %}
 <img src = "{{listing.url}}" alt = "Listing Image">
 {% endif %}
@@ -41,8 +48,9 @@
             <input type = "hidden" value = "{{listing.id}}" name = "listing_id">
             <input id = "submit_button" type = "SUBMIT" class = "btn btn-success" value = "Add to Watch List">
         </form>
-           </div>
+    </div>
 {% endif %}
+</div>
 <script>
     $(document).ready(function() {
         if ({{watching_status}}) {

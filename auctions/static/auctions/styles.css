@@ -1,9 +1,15 @@
 body {
     padding: 10px;
+    padding-left: 30px;
+}
+
+.left-padding{
+    padding-left: 10px;
 }
 
 .form_div {
     margin: 10px;
+    margin-left: 0px;
 }
 
 .form_btn {
@@ -12,11 +18,13 @@ body {
 
 .start_bid {
     font-style: bold;
+    margin-bottom: 0px;
 
 }
 .current_bid {
     font-style: italic;
     color: red;
+    margin-bottom: 0px;
 }
 
 .text-form {
@@ -24,6 +32,13 @@ body {
     padding: 5px;
 }
 
-.bid_input.form-control {
-    width: 100px;
+#id_bid {
+    width: 100%;
+    
 }
+
+#row {
+    margin-left: 0;
+}
+
+
