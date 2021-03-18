@@ -23,8 +23,9 @@ class User(AbstractUser):
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = "same_start_bid", default = "")
     current_bid = models.DecimalField(default = 0.00, decimal_places = 2, max_digits=100000)
+    bidder = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
     def __str__(self):
-        return f"Current bid on {self.listing.title} is ${self.current_bid}"
+        return f"Current bid on {self.listing.title} is ${self.current_bid} by {self.bidder}"
     pass
 
 

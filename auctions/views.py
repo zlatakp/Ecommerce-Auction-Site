@@ -35,7 +35,7 @@ def create_new(request):
             url = form.cleaned_data["url"]
             listing = Listing(title = title, start_bid = start_bid, url = url, description = description, category = category)
             listing.save()
-            bid = Bid(listing = listing, current_bid = start_bid)
+            bid = Bid(listing = listing, current_bid = start_bid, bidder = request.user.id)
             bid.save()
 
             return redirect("listing/"+str(listing.id))
@@ -47,7 +47,29 @@ def create_new(request):
             "form": form
         })
 def listing(request, list_id):
-    if request.method == "GET":
+    if request.method == "POST":
+        bidform = NewBid(request.POST)
+        if bidform.is_valid():
+            listing = Listing.objects.get(id = list_id)
+            bidded = bidform.cleaned_data['bid']
+            bid = Bid.objects.get(listing = listing)
+            current_bid = bid.current_bid
+            if bidded > current_bid:
+                user = User.objects.get(id = request.user.id)
+                Bid.objects.filter(listing = listing).update(current_bid = bidded, bidder = user)  
+                watching_status = user.watching.filter(id = list_id).exists()
+                form = NewBid()
+                return render(request, "auctions/listing.html", {
+                    "form": form,
+                    "listing": listing,
+                    "start_bid": "${:,.2f}".format(listing.start_bid),
+                    "current_bid": "${:,.2f}".format(bidded),
+                    "watching_status": str(watching_status).lower()
+                })
+            else:
+                return HttpResponseRedirect(reverse("listing", args = (list_id,)))
+
+    else:
         listing = Listing.objects.get(id = list_id)
         bid = Bid.objects.get(listing = listing)
         user = User.objects.get(id = request.user.id)
@@ -60,6 +82,9 @@ def listing(request, list_id):
             "current_bid": "${:,.2f}".format(bid.current_bid),
             "watching_status": str(watching_status).lower()
         })
+
+
+
 
     
 def add(request, list_id):
