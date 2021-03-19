@@ -1,0 +1,18 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Categories</h2>
+<div class = "left-padding">
+
+    {% for category in categories %}
+    <div>
+        <a href = '{% url "category_listing" category.id %}'>{{category.name}}</a>
+    </div>
+
+    {% empty %} 
+    <p>There are no existing categories.</p>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

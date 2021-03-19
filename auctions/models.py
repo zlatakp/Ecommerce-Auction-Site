@@ -4,6 +4,7 @@ from django.db import models
 
 
 class Category(models.Model):
+    id = models.AutoField(primary_key = True)
     name = models.CharField(max_length = 50, default = "")
     def __str__(self):
         return self.name
@@ -17,7 +18,8 @@ class Listing(models.Model):
         return f"{self.title} starting at ${self.start_bid}."
 class User(AbstractUser):
     watching = models.ManyToManyField(Listing, blank=True, related_name = "WatchedBy")
-    
+    def __str__(self):
+        return f"{self.username} is watching {self.watching}"
     pass
 
 class Bid(models.Model):

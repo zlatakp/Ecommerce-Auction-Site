@@ -1,10 +1,13 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-    <ul>
-    {% for listing in listings %}
-        <li><a href = "{% url 'listing' listing.id %}">{{listing.title}}</a></li>
-    {% endfor %}
-    </ul>
+    <h2>{{title}}</h2>
+    <div class = "left-padding">
+        <ul>
+            {% for listing in listings %}
+                <li><a href = "{% url 'listing' listing.id %}">{{listing.title}}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    
 {% endblock %}

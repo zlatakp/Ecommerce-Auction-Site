@@ -15,10 +15,20 @@ class NewListing(forms.Form):
     url = forms.URLField(required = False)
 
 class NewBid(forms.Form):
-    bid = forms.DecimalField(label = "Your Bid", min_value=0.00, decimal_places=2)
+    bid = forms.DecimalField(label = "Your Bid", decimal_places=2)
+    def __init__(self, *args, **kwargs):
+        try:
+            current_min = kwargs.pop('current_min')
+        except KeyError:
+            current_min = 0
+        super(NewBid, self).__init__(*args, **kwargs)
+        self.fields['bid'].widget.attrs['min'] = float(current_min)
+
+
 
 def index(request):
     return render(request, "auctions/index.html", {
+        "title": 'Active Listings',
         "listings": Listing.objects.all()
     })
 
@@ -58,7 +68,7 @@ def listing(request, list_id):
                 user = User.objects.get(id = request.user.id)
                 Bid.objects.filter(listing = listing).update(current_bid = bidded, bidder = user)  
                 watching_status = user.watching.filter(id = list_id).exists()
-                form = NewBid()
+                form = NewBid(current_min = bidded)
                 return render(request, "auctions/listing.html", {
                     "form": form,
                     "listing": listing,
@@ -74,7 +84,7 @@ def listing(request, list_id):
         bid = Bid.objects.get(listing = listing)
         user = User.objects.get(id = request.user.id)
         watching_status = user.watching.filter(id = list_id).exists()
-        form = NewBid()
+        form = NewBid(current_min = bid.current_bid)
         return render(request, "auctions/listing.html", {
             "form": form,
             "listing": listing,
@@ -82,9 +92,6 @@ def listing(request, list_id):
             "current_bid": "${:,.2f}".format(bid.current_bid),
             "watching_status": str(watching_status).lower()
         })
-
-
-
 
     
 def add(request, list_id):
@@ -104,6 +111,30 @@ def remove(request, list_id):
         return HttpResponseRedirect(reverse("listing", args = (list_id,)))
     else:
         return HttpResponseRedirect(reverse("listing", args = (list_id,)))
+
+def watchlist(request):
+    if request.method == "GET":
+        watchlist = User.objects.get(id = request.user.id).watching.all()
+        return render(request, "auctions/watchlist.html", {
+            "watchlist": watchlist
+        })
+
+def categories(request):
+    if request.method == "GET":
+        categories = Category.objects.all()
+        return render(request, "auctions/categories.html", {
+            "categories": categories
+        })
+
+def category_listing(request, cat_id):
+    if request.method == "GET":
+        category = Category.objects.get(id = cat_id)
+        listings = category.category_listing.all()
+        return render(request, "auctions/index.html", {
+            "title": category.name,
+            "listings": listings
+        })
+
 
 
 def login_view(request):
