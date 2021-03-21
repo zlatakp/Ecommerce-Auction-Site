@@ -22,8 +22,9 @@ class Listing(models.Model):
     description = models.CharField(max_length = 200, default = "")
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = "category_listing", default  = "")
     watched = models.ManyToManyField(User, related_name = "watchedby", blank = True)
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, null = True, blank = True)
     def __str__(self):
-        return f"{self.title} starting at ${self.start_bid}."
+        return f"{self.title} starting at ${self.start_bid} posted by {self.owner}."
 
 
 class Bid(models.Model):

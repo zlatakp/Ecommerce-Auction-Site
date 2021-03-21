@@ -14,6 +14,7 @@ class NewListing(forms.Form):
     description = forms.CharField(widget = forms.Textarea)
     url = forms.URLField(required = False)
 
+
 class NewBid(forms.Form):
     bid = forms.DecimalField(label = "Your Bid", decimal_places=2)
     def __init__(self, *args, **kwargs):
@@ -43,7 +44,8 @@ def create_new(request):
             category_id = form.cleaned_data["category"]
             category = Category.objects.get(id = category_id)
             url = form.cleaned_data["url"]
-            listing = Listing(title = title, start_bid = start_bid, url = url, description = description, category = category)
+            owner = User.objects.get(id = request.user.id)
+            listing = Listing(title = title, owner = owner, start_bid = start_bid, url = url, description = description, category = category)
             listing.save()
             bid = Bid(listing = listing, current_bid = start_bid, bidder = request.user.id)
             bid.save()
