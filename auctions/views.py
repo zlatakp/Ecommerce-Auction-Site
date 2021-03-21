@@ -67,7 +67,7 @@ def listing(request, list_id):
             if bidded > current_bid:
                 user = User.objects.get(id = request.user.id)
                 Bid.objects.filter(listing = listing).update(current_bid = bidded, bidder = user)  
-                watching_status = user.watching.filter(id = list_id).exists()
+                watching_status = user.watchedby.filter(id = list_id).exists()
                 form = NewBid(current_min = bidded)
                 return render(request, "auctions/listing.html", {
                     "form": form,
@@ -83,7 +83,7 @@ def listing(request, list_id):
         listing = Listing.objects.get(id = list_id)
         bid = Bid.objects.get(listing = listing)
         user = User.objects.get(id = request.user.id)
-        watching_status = user.watching.filter(id = list_id).exists()
+        watching_status = user.watchedby.filter(id = list_id).exists()
         form = NewBid(current_min = bid.current_bid)
         return render(request, "auctions/listing.html", {
             "form": form,
@@ -98,7 +98,7 @@ def add(request, list_id):
     if request.method == "POST":
         user = User.objects.get(id = request.user.id)
         listing = Listing.objects.get(id = list_id)
-        user.watching.add(listing)
+        listing.watched.add(user)
         return HttpResponseRedirect(reverse("listing", args = (list_id,)))
     else:
         return HttpResponseRedirect(reverse("listing", args = (list_id,) ))
@@ -107,14 +107,15 @@ def remove(request, list_id):
     if request.method == "POST":
         user = User.objects.get(id = request.user.id)
         listing = Listing.objects.get(id = list_id)
-        user.watching.remove(listing)
+        listing.watched.remove(user)
         return HttpResponseRedirect(reverse("listing", args = (list_id,)))
     else:
         return HttpResponseRedirect(reverse("listing", args = (list_id,)))
 
 def watchlist(request):
     if request.method == "GET":
-        watchlist = User.objects.get(id = request.user.id).watching.all()
+        user = User.objects.get(id = request.user.id)
+        watchlist = user.watchedby.all()
         return render(request, "auctions/watchlist.html", {
             "watchlist": watchlist
         })

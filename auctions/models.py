@@ -8,19 +8,23 @@ class Category(models.Model):
     name = models.CharField(max_length = 50, default = "")
     def __str__(self):
         return self.name
+
+class User(AbstractUser):
+    def __str__(self):
+        return self.username
+    pass
+
+
 class Listing(models.Model):
     title = models.CharField(max_length = 100)
     start_bid = models.DecimalField(decimal_places=2, max_digits = 1000000)
     url = models.CharField(max_length = 200, blank = True)
     description = models.CharField(max_length = 200, default = "")
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = "category_listing", default  = "")
+    watched = models.ManyToManyField(User, related_name = "watchedby", blank = True)
     def __str__(self):
         return f"{self.title} starting at ${self.start_bid}."
-class User(AbstractUser):
-    watching = models.ManyToManyField(Listing, blank=True, related_name = "WatchedBy")
-    def __str__(self):
-        return f"{self.username} is watching {self.watching}"
-    pass
+
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = "same_start_bid", default = "")
