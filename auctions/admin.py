@@ -1,4 +1,4 @@
-from django.contrib import adminfrom
+from django.contrib import admin
 from .models import Category, User, Listing, Bid, Comment
 
 # Register your models here.
