@@ -1,6 +1,18 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+{% if listing.status == 'inactive' %}
+    <div class = 'text-center alert alert-secondary' role = 'alert'>
+        The bidding on this item is closed.
+    </div>
+    {% if won == True %}
+    <div class = 'text-center alert alert-success' role = 'alert'>
+        You've won the auction.
+    </div>
+{% endif %}
+{% endif %}
+
+
 <h2>{{listing.title}}</h2>
 <div class = "left-padding">
 <p class = "start_bid">Starting at {{start_bid}}</p>
@@ -20,42 +32,58 @@
             </div>
         </div>
     </form>
-    <script>
-        $("#id_bid").addClass("form-control form-group form-div col-xs-2 bid_input left-padding")
-        
-    </script>
-
-
 {% endif %}
-
-
-
-<form class = "form-div">
+<div class = "form-div">
     <p>{{listing.description}}</p>
-</form>
+</div>
 
 {% if listing.url != "" %}
-<img src = "{{listing.url}}" alt = "Listing Image">
+    <img src = "{{listing.url}}" alt = "Listing Image">
 {% endif %}
+
 {% if user.is_authenticated %}
-    <div>
+    <div class = "form_div">
         <form id = "form" action = "{% url 'add' listing.id %}" method = "POST">
             {% csrf_token %}
             <input type = "hidden" value = "{{listing.id}}" name = "listing_id">
             <input id = "submit_button" type = "SUBMIT" class = "btn btn-success" value = "Add to Watch List">
         </form>
     </div>
+
+    <div class = "form_div">
+        <form id = "closebid" action ="{% url 'index' %}" method = "POST">
+            {% csrf_token %}
+            <input name = "list_id" type = "hidden" value = "{{listing.id}}">
+            <input id = "close_button" type = "SUBMIT" class = "btn btn-danger" value = "Close the Bid">
+        </form>
+    </div>
+
+
 {% endif %}
 </div>
 <script>
+    owner_status = {{owner_status}}
+    watching_status = {{watching_status}}
+    listing_status = "{{listing.status}}";
+    $("#id_bid").addClass("form-control form-group form-div col-xs-2 bid_input left-padding");
+    $("#close_button").hide();
+    
     $(document).ready(function() {
-        if ({{watching_status}}) {
+        if (watching_status) {
             $("#submit_button").removeClass("btn-success")
             .addClass("btn-danger")
             .val("Remove from Watch List")
 
             $('#form').attr('action', '{% url "remove" listing.id %}')
-    }
+        };
+        if (owner_status == true && listing_status == 'active') {
+            $("#close_button").show()
+        };
+
+        if (listing_status == 'inactive') {
+            $("input:submit").prop("disabled", true)
+        };
+
     })  
 </script>
 

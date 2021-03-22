@@ -28,10 +28,24 @@ class NewBid(forms.Form):
 
 
 def index(request):
-    return render(request, "auctions/index.html", {
-        "title": 'Active Listings',
-        "listings": Listing.objects.all()
-    })
+    if request.method == "POST":
+        list_id = request.POST.get("list_id")
+        listing_set = Listing.objects.filter(id = list_id)
+        listing = listing_set[0]
+        bid_set = Bid.objects.filter(listing = listing)
+        bid = bid_set[0]
+        bidder = bid.bidder
+        listing_set.update(status = 'inactive', winner = bidder)
+
+        return render(request, "auctions/index.html", {
+            "title": "Active Listings",
+            "listings": Listing.objects.filter(status = 'active')
+            })
+    else:
+        return render(request, "auctions/index.html", {
+            "title": 'Active Listings',
+            "listings": Listing.objects.filter(status = 'active')
+            })
 
 def create_new(request):
 
@@ -47,10 +61,10 @@ def create_new(request):
             owner = User.objects.get(id = request.user.id)
             listing = Listing(title = title, owner = owner, start_bid = start_bid, url = url, description = description, category = category)
             listing.save()
-            bid = Bid(listing = listing, current_bid = start_bid, bidder = request.user.id)
+            bid = Bid(listing = listing, current_bid = start_bid)
             bid.save()
 
-            return redirect("listing/"+str(listing.id))
+            return HttpResponseRedirect(reverse("listing", args = (listing.id, )))
     else:
         form = NewListing()
         categories = Category.objects.all()
@@ -71,25 +85,24 @@ def listing(request, list_id):
                 Bid.objects.filter(listing = listing).update(current_bid = bidded, bidder = user)  
                 watching_status = user.watchedby.filter(id = list_id).exists()
                 form = NewBid(current_min = bidded)
-                return render(request, "auctions/listing.html", {
-                    "form": form,
-                    "listing": listing,
-                    "start_bid": "${:,.2f}".format(listing.start_bid),
-                    "current_bid": "${:,.2f}".format(bidded),
-                    "watching_status": str(watching_status).lower()
-                })
-            else:
-                return HttpResponseRedirect(reverse("listing", args = (list_id,)))
+                return HttpResponseRedirect(reverse('listing', args = (list_id, )))
+            return HttpResponseRedirect(reverse("listing", args = (list_id,)))
 
     else:
         listing = Listing.objects.get(id = list_id)
         bid = Bid.objects.get(listing = listing)
         user = User.objects.get(id = request.user.id)
+        owner_status = listing.owner == user
         watching_status = user.watchedby.filter(id = list_id).exists()
         form = NewBid(current_min = bid.current_bid)
+        won = False
+        if listing.winner == user:
+            won = True
         return render(request, "auctions/listing.html", {
+            "owner_status": str(owner_status).lower(),
             "form": form,
             "listing": listing,
+            "won": won,
             "start_bid": "${:,.2f}".format(listing.start_bid),
             "current_bid": "${:,.2f}".format(bid.current_bid),
             "watching_status": str(watching_status).lower()
@@ -117,7 +130,7 @@ def remove(request, list_id):
 def watchlist(request):
     if request.method == "GET":
         user = User.objects.get(id = request.user.id)
-        watchlist = user.watchedby.all()
+        watchlist = user.watchedby.filter(status = 'active')
         return render(request, "auctions/watchlist.html", {
             "watchlist": watchlist
         })
@@ -132,12 +145,20 @@ def categories(request):
 def category_listing(request, cat_id):
     if request.method == "GET":
         category = Category.objects.get(id = cat_id)
-        listings = category.category_listing.all()
+        listings = category.category_listing.filter(status = 'active')
         return render(request, "auctions/index.html", {
             "title": category.name,
             "listings": listings
         })
 
+
+def won(request):
+    user  = User.objects.get(id = request.user.id)
+    listings = user.wonitems.all()
+    return render(request, "auctions/index.html", {
+        "title": "Won Auctions",
+        "listings": listings
+    })
 
 
 def login_view(request):

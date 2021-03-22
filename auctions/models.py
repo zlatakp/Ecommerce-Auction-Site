@@ -16,6 +16,10 @@ class User(AbstractUser):
 
 
 class Listing(models.Model):
+    status_choice = [('active','active'), ('inactive','inactive')]
+    winner = models.ForeignKey(User, on_delete = models.SET_DEFAULT, null = True, default = None, related_name = 'wonitems')
+    
+    status = models.CharField(max_length = 10, choices = status_choice, default = 'active')
     title = models.CharField(max_length = 100)
     start_bid = models.DecimalField(decimal_places=2, max_digits = 1000000)
     url = models.CharField(max_length = 200, blank = True)
@@ -30,7 +34,7 @@ class Listing(models.Model):
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = "same_start_bid", default = "")
     current_bid = models.DecimalField(default = 0.00, decimal_places = 2, max_digits=100000)
-    bidder = models.ForeignKey(User, on_delete = models.CASCADE, null = True)
+    bidder = models.ForeignKey(User, on_delete = models.SET_DEFAULT, null = True, default = None, blank = True, related_name = 'biddeditems')
     def __str__(self):
         return f"Current bid on {self.listing.title} is ${self.current_bid} by {self.bidder}"
     pass
