@@ -19,6 +19,7 @@
                 Not signed in.
             {% endif %}
         </div>
+        <nav class = "navbar bg-dark justify-content-center">
         <ul class="nav justify-content-center">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
@@ -48,8 +49,13 @@
                 </li>
             {% endif %}
         </ul>
+        </nav>
         <hr>
         {% block body %}
         {% endblock %}
+    <script>
+        $("nav > ul > li > a ").addClass("navbar-brand text-white")
+        
+    </script>
     </body>
 </html>

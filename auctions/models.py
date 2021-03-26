@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from datetime import datetime
 
 
 
@@ -43,4 +44,10 @@ class Bid(models.Model):
 
     
 class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE, default = "")
+    listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = 'comments', default = "")
+    text = models.CharField(max_length=200, default = "")
+    time = models.DateTimeField(default = datetime.now())
+    def __str__(self):
+        return f"{self.user} commented {self.text} at {self.time} on {self.listing.title} listing"
     pass 

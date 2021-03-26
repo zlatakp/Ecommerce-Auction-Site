@@ -18,7 +18,7 @@
 <p class = "start_bid">Starting at {{start_bid}}</p>
 <p class = "current_bid">Current bid: {{current_bid}}</p>
 {% if user.is_authenticated %}
-    <form id = "bid_form" action = "" method = "POST">
+    <form id = "bid_form" action = "{% url 'bid' listing.id %}" method = "POST">
         {% csrf_token %}
         <div class = "row" id = "row">
             <div class = "col-xs-2 form-group form_div" id = "bid_div">
@@ -58,6 +58,33 @@
         </form>
     </div>
 
+    <h3>
+        <div style = "padding-top: 40px; padding-bottom: 20px; border-bottom: solid 0.2px lightgray ">
+            Comments
+        </div>   
+    </h3>
+    <div class = "comments">
+    {% for comment in comments %}
+    <div class = "left-padding" style = "margin: 30px">
+        <div><strong>{{comment.user.username}}</strong></div>
+        <div><i>{{comment.time | timesince}} ago</i></div>
+        <div style = "width: 60%">{{comment.text}}</div>
+    </div>
+    {% endfor %}
+    </div>
+    <div class = "left-padding" style = "margin: 30px">
+    <form id = "comment_form" action = "{% url 'listing' listing.id %}" method = "POST">
+        {% csrf_token %}
+        <div class = "form-group">
+        {% for field in comment_form %}
+        <div>{{field.label}}</div>
+        <div style = "width: 60%">{{field}}</div>
+        {% endfor %}
+        </div>
+        <input type = "SUBMIT" id = "post_comment" class = "btn btn-primary" value = "Post Comment">            
+    </form>
+</div>
+    
 
 {% endif %}
 </div>
@@ -67,8 +94,10 @@
     listing_status = "{{listing.status}}";
     $("#id_bid").addClass("form-control form-group form-div col-xs-2 bid_input left-padding");
     $("#close_button").hide();
+    $("form > div > div > textarea").addClass("form-control");
     
     $(document).ready(function() {
+        
         if (watching_status) {
             $("#submit_button").removeClass("btn-success")
             .addClass("btn-danger")
@@ -81,7 +110,7 @@
         };
 
         if (listing_status == 'inactive') {
-            $("input:submit").prop("disabled", true)
+            $("input:submit").not("#post_comment").prop("disabled", true)
         };
 
     })  

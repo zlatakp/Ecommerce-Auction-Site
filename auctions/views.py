@@ -1,30 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from .models import User, Category, Listing, Bid
-from django import forms
-
-class NewListing(forms.Form):
-    categories = list(Category.objects.values_list())
-    title = forms.CharField(label = "Title", max_length = 100, required = True)
-    start_bid = forms.DecimalField(label = "Starting Bid", decimal_places = 2, required = True)
-    category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category" )
-    description = forms.CharField(widget = forms.Textarea)
-    url = forms.URLField(required = False)
-
-
-class NewBid(forms.Form):
-    bid = forms.DecimalField(label = "Your Bid", decimal_places=2)
-    def __init__(self, *args, **kwargs):
-        try:
-            current_min = kwargs.pop('current_min')
-        except KeyError:
-            current_min = 0
-        super(NewBid, self).__init__(*args, **kwargs)
-        self.fields['bid'].widget.attrs['min'] = float(current_min)
-
+from .models import User, Category, Listing, Bid, Comment
+from datetime import datetime
+from .forms import NewListing, NewBid, NewComment
 
 
 def index(request):
@@ -47,8 +29,8 @@ def index(request):
             "listings": Listing.objects.filter(status = 'active')
             })
 
+@login_required
 def create_new(request):
-
     if request.method == "POST":
         form = NewListing(request.POST)
         if form.is_valid():
@@ -72,7 +54,10 @@ def create_new(request):
             "categories": categories,
             "form": form
         })
-def listing(request, list_id):
+
+
+@login_required
+def bid(request, list_id):
     if request.method == "POST":
         bidform = NewBid(request.POST)
         if bidform.is_valid():
@@ -84,10 +69,23 @@ def listing(request, list_id):
                 user = User.objects.get(id = request.user.id)
                 Bid.objects.filter(listing = listing).update(current_bid = bidded, bidder = user)  
                 watching_status = user.watchedby.filter(id = list_id).exists()
-                form = NewBid(current_min = bidded)
                 return HttpResponseRedirect(reverse('listing', args = (list_id, )))
-            return HttpResponseRedirect(reverse("listing", args = (list_id,)))
+    return HttpResponseRedirect(reverse("listing", args = (list_id,)))
 
+
+def listing(request, list_id):
+    if request.method == "POST":
+        comment_form = NewComment(request.POST)
+        if comment_form.is_valid():
+            text = comment_form.cleaned_data['text']
+            listing = Listing.objects.get(id = list_id)
+            user = User.objects.get(id = request.user.id)
+            time = datetime.now()
+            new_comment = Comment(text = text, listing = listing, user = user, time = time)
+            new_comment.save()
+        else:
+            return HttpResponse('oops')
+        return HttpResponseRedirect(reverse("listing", args = (list_id,) ))
     else:
         listing = Listing.objects.get(id = list_id)
         bid = Bid.objects.get(listing = listing)
@@ -95,6 +93,8 @@ def listing(request, list_id):
         owner_status = listing.owner == user
         watching_status = user.watchedby.filter(id = list_id).exists()
         form = NewBid(current_min = bid.current_bid)
+        comments = Comment.objects.filter(listing = listing)
+        comment_form = NewComment()
         won = False
         if listing.winner == user:
             won = True
@@ -105,10 +105,13 @@ def listing(request, list_id):
             "won": won,
             "start_bid": "${:,.2f}".format(listing.start_bid),
             "current_bid": "${:,.2f}".format(bid.current_bid),
-            "watching_status": str(watching_status).lower()
+            "watching_status": str(watching_status).lower(),
+            "comments": comments,
+            "comment_form": comment_form,
+            "now": datetime.now()
         })
 
-    
+@login_required 
 def add(request, list_id):
     if request.method == "POST":
         user = User.objects.get(id = request.user.id)
@@ -118,6 +121,7 @@ def add(request, list_id):
     else:
         return HttpResponseRedirect(reverse("listing", args = (list_id,) ))
 
+@login_required 
 def remove(request, list_id):
     if request.method == "POST":
         user = User.objects.get(id = request.user.id)
@@ -127,6 +131,7 @@ def remove(request, list_id):
     else:
         return HttpResponseRedirect(reverse("listing", args = (list_id,)))
 
+@login_required 
 def watchlist(request):
     if request.method == "GET":
         user = User.objects.get(id = request.user.id)
@@ -151,7 +156,7 @@ def category_listing(request, cat_id):
             "listings": listings
         })
 
-
+@login_required 
 def won(request):
     user  = User.objects.get(id = request.user.id)
     listings = user.wonitems.all()
@@ -180,7 +185,7 @@ def login_view(request):
     else:
         return render(request, "auctions/login.html")
 
-
+@login_required 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
