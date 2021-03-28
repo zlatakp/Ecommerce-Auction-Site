@@ -1,54 +1,16 @@
 body {
-    padding: 10px;
-    padding-left: 30px;
-}
-
-.left-padding{
-    padding-left: 10px;
-}
-
-.form_div {
-    margin: 10px;
-    margin-left: 0px;
-}
-
-.form_btn {
-    margin: 5px;
-}
-
-.start_bid {
-    font-style: bold;
-    margin-bottom: 0px;
-
-}
-.current_bid {
-    font-style: italic;
-    color: red;
-    margin-bottom: 0px;
-}
-
-.text-form {
-    font-family: 'Times New Roman', Times, serif;
-    padding: 5px;
-}
-
-#id_bid {
-    width: 100%;
+    padding: 0px;
     
 }
 
-#row {
-    margin-left: 0;
+a.dropdown-item.text-white:hover {
+    color: #343a40!important;
+    background-color:#fff!important;
+    
 }
 
-.comments {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 11px;
+div.dropdown-menu{
+    border: 0px;
+    border-radius: 2px;
+    float: right;
 }
-
-
-
-
-
-
-
