@@ -1,16 +1,37 @@
 body {
     padding: 0px;
-    
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 a.dropdown-item.text-white:hover {
-    color: #343a40!important;
-    background-color:#fff!important;
     
 }
 
-div.dropdown-menu{
-    border: 0px;
-    border-radius: 2px;
-    float: right;
+h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
+
+div.dropdown-menu{
+    margin-top: 8px;
+    border-radius: 2px;
+    left: auto;
+    right: 15px;
+    text-align: right;
+    padding: 2px;
+    width: auto;
+    float: right;
+    font-size: 14px;
+}
+
+main {
+    padding-left: 30px;
+}
+
+a.navbar-brand {
+    font-size: 16px;
+}
+
+ul.nav {
+    width: 100%
+}
+

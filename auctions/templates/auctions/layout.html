@@ -15,6 +15,7 @@
     </head>
     <body>
         <h1 class = "text-center">Auctions</h1>
+        <hr>
         <div>
             {% if user.is_authenticated %}
                 Signed in as <strong>{{ user.username }}</strong>.
@@ -24,7 +25,7 @@
         </div>
         
         <nav class = "navbar bg-dark justify-content-center">
-        <ul class="nav justify-content-center">
+        <ul class="nav justify-content-between">
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
             </li>
@@ -44,8 +45,9 @@
                 <li class="nav-item dropdown_head">
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Signed in as {{ user.username }}</a>
-                        <div class="dropdown-menu bg-dark">
-                            <a class="nav-link dropdown-item text-white" href="{% url 'logout' %}">Log Out</a>
+                        <div class="dropdown-menu">
+                            <a class="nav-link dropdown-item" href="{% url 'login' %}">Sign in with a different account</a>
+                            <a class="nav-link dropdown-item" href="{% url 'logout' %}">Log Out</a>
                         </div>
                     </div>
                     
@@ -63,9 +65,11 @@
         </nav>
     
         <hr>
+        <main>
+            {% block body %}
+            {% endblock %}
+        </main>
        
-        {% block body %}
-        {% endblock %}
         
     <script>
         $("nav > ul > li > a, nav > ul > li > div > a ").addClass("navbar-brand text-white")
