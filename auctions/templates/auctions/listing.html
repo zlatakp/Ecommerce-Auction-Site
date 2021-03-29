@@ -33,13 +33,14 @@
         </div>
     </form>
 {% endif %}
+{% if listing.url != "" %}
+    <img class = "listing_image" src = "{{listing.url}}" alt = "Listing Image">
+{% endif %}
 <div class = "form-div">
     <p>{{listing.description}}</p>
 </div>
 
-{% if listing.url != "" %}
-    <img src = "{{listing.url}}" alt = "Listing Image">
-{% endif %}
+
 
 {% if user.is_authenticated %}
     <div class = "form_div">

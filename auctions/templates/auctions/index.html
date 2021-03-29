@@ -3,11 +3,16 @@
 {% block body %}
     <h2>{{title}}</h2>
     <div class = "left-padding">
-        <ul>
-            {% for listing in listings %}
-                <li><a href = "{% url 'listing' listing.id %}">{{listing.title}}</a></li>
-            {% endfor %}
-        </ul>
+        {% for listing in listings %}
+                <div class = "image_grid">
+                    <div class = "image_box">
+                        <a href = "{% url 'listing' listing.id %}"><img class = "index_image" src = '{{listing.url}}' onerror = 'this.onerror=null;this.src = "static/auctions/not_available.png"'></a>
+                    </div>
+                    <a href = "{% url 'listing' listing.id %}">
+                        <div class = "index_title">{{listing.title}}</div>
+                    </a>
+                </div>
+        {% endfor %}
     </div>
     
 {% endblock %}
