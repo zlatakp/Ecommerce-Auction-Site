@@ -7,8 +7,24 @@ a.dropdown-item.text-white:hover {
     
 }
 
-h1 {
+.title {
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 70px;
+}
+.form_field {
+    margin-bottom: 10px;
+}
+
+.form-group {
+    width: 50%;
+}
+
+h2.page_title {
+    font-style: bold;
+    font-weight: 600;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    
 }
 
 div.dropdown-menu{
@@ -24,7 +40,7 @@ div.dropdown-menu{
 }
 
 main {
-    padding-left: 30px;
+    padding-left: 40px;
 }
 
 a.navbar-brand {
@@ -38,8 +54,9 @@ ul.nav {
 .image_grid {
     float: left;
     width: 25%;
-    height: 200px;
+    height: 250px;
     padding: 20px;
+
     text-align: center;
 }
 .image_box {
@@ -50,7 +67,6 @@ ul.nav {
 .listing_image {
     width: 300px;
     height: auto;
-    
 
 }
 
@@ -63,4 +79,72 @@ a > div.index_title {
     text-align: center;
     color:#212529;
 }
+a.categories:hover {
+    text-decoration: none;
+}
+
+div.index_price {
+    color: red;
+    font-size: 12px;
+    font-style: italic;
+}
+
+
+.image_grid.categories {
+    width: 50%;
+    height: 340px;
+}
+
+
+
+img.index_image.categories {
+    width: 100%;
+    height: 300px;
+    max-height: 300px;
+    object-fit: cover;
+    opacity: 0.6;
+}
+
+
+
+
+
+.image_box.categories {
+    height: 300px; 
+    position: relative;
+    text-align: center;
+
+}
+
+div.categories_title{
+    position: absolute;
+    font-weight: 800;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    font-size: 3vmin;
+    color:#212529; 
+}
+div.categories_title:hover {
+    background-color: rgba(255, 255, 255, 0.85);
+}
+
+
+.input_container{
+    position: relative;
+    display: inline-block;
+}
+
+.sign {
+    position: absolute;
+    font-size: 1rem;
+    top: 31.5px;
+    left: 28.1px;
+}
+
+a.nav-link.dropdown-item:active{
+    background-color: #212529;
+}
+
 

@@ -1,12 +1,12 @@
 from django import forms
 from .models import Category
 class NewListing(forms.Form):
-    categories = list(Category.objects.values_list())
+    categories = list(Category.objects.values_list('name', 'name'))
     title = forms.CharField(label = "Title", max_length = 100, required = True)
-    start_bid = forms.DecimalField(label = "Starting Bid", decimal_places = 2, required = True)
-    category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category" )
-    description = forms.CharField(widget = forms.Textarea)
-    url = forms.URLField(required = False)
+    start_bid = forms.DecimalField(label = "Starting Bid", decimal_places = 2, required = True, widget = forms.NumberInput(attrs={'placeholder': '0.00'}))
+    category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category")
+    description = forms.CharField(widget = forms.Textarea, label = "Description of the Item")
+    url = forms.URLField(required = False, label = "URL link to an image of the item")
 
 
 class NewBid(forms.Form):

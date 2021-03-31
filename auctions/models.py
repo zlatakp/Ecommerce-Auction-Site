@@ -6,6 +6,7 @@ from datetime import datetime
 
 class Category(models.Model):
     id = models.AutoField(primary_key = True)
+    url = models.CharField(default = "", max_length = 1000)
     name = models.CharField(max_length = 50, default = "")
     def __str__(self):
         return self.name

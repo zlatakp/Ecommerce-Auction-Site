@@ -1,7 +1,8 @@
 {% extends "auctions/layout.html" %}
-
+{% block pagetitle %}
+Watchlist
+{% endblock %}
 {% block body %}
-<h2>Watchlist</h2>
 <div class = "left-padding">
 {% if user.is_authenticated %}
     {% for item in watchlist %}

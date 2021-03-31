@@ -2,23 +2,30 @@
 {% block script %}
 
 {% endblock %}
+{% block pagetitle %}
+    Create a New Listing
+{% endblock %}
+
 {% block body %}
 <form method = "POST" action = "/newlisting">
     {% csrf_token %}
     {% for field in form %}
-        <div class = "form_div">
+        <div class = "form_field">
             {{field.label}}
             <br>
             {{field}}
         </div>
     {% endfor %}
     
-    <div class = "form_div">
+    <div>
         <input class = "btn btn-success" type = "SUBMIT" value = "Create Listing">
     </div>  
 </form>
 <script>
     $("form > div").addClass("col-7 text-form")
     $("div > input, div > select, div > textarea").addClass("form-control")
+    $("#id_start_bid").parent().append("<span>$</span>").addClass('input_container')
+    $("#id_start_bid").css({"padding-left":"1.35rem"})
+    $('div > span').addClass('sign')
 </script>
 {% endblock %}

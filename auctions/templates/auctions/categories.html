@@ -1,12 +1,26 @@
 {% extends "auctions/layout.html" %}
 
+{% block pagetitle %}
+    Categories
+{% endblock %}
 {% block body %}
-<h2>Categories</h2>
-<div class = "left-padding">
+
+<div>
 
     {% for category in categories %}
-    <div>
-        <a href = '{% url "category_listing" category.id %}'>{{category.name}}</a>
+    <div class = "image_grid categories">
+        <div class = "image_box categories">
+            
+            <div>
+                <a href = '{% url "category_listing" category.id %}'><img class = "index_image categories" src = '{{category.url}}'></a>
+            </div>
+            <div class = "categories_title">
+                <a href = '{% url "category_listing" category.id %}' class = "categories"><div class = "index_title">{{category.name}}</div></a>
+            </div>
+            
+        </div>
+        
+        
     </div>
 
     {% empty %} 

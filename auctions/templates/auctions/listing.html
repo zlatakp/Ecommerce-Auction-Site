@@ -1,5 +1,8 @@
 {% extends "auctions/layout.html" %}
 
+{% block pagetitle %}
+{{listing.title}}
+{% endblock %}
 {% block body %}
 {% if listing.status == 'inactive' %}
     <div class = 'text-center alert alert-secondary' role = 'alert'>
@@ -12,8 +15,6 @@
 {% endif %}
 {% endif %}
 
-
-<h2>{{listing.title}}</h2>
 <div class = "left-padding">
 <p class = "start_bid">Starting at {{start_bid}}</p>
 <p class = "current_bid">Current bid: {{current_bid}}</p>
