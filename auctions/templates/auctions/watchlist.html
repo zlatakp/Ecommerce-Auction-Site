@@ -3,12 +3,55 @@
 Watchlist
 {% endblock %}
 {% block body %}
-<div class = "left-padding">
+<hr style = "border-top: 1.5px solid">
+<div class = "listing">
 {% if user.is_authenticated %}
-    {% for item in watchlist %}
-    <div>
-        <a href = "{% url 'listing' item.id %}">{{item.title}}</a>
-    </div>
+    {% for listing in watchlist %}
+        <div class="container watchlist">
+            <div class = "row">
+                <div class = 'col-3'>
+                    <a href = "{% url 'listing' listing.id %}">
+                        <div class = "watchlist index_title">{{listing.title}}</div>
+                    </a>
+                </div>
+                
+                
+
+            </div>
+            <div class = "row">
+                <div class = 'col-3'>
+                    <a href = "{% url 'listing' listing.id %}"><img class = "index_image" src = '{{listing.url}}' onerror = 'this.onerror=null;this.src = "static/auctions/not_available.png"'></a>
+                </div>
+                <div class = 'col'>
+                    <div class = 'form_field text-right' style = "margin-top:41px">
+                        <form id = "form" action = "{% url 'add' listing.id %}" method = "POST">
+                            {% csrf_token %}
+                            <input type = "hidden" value = "{{listing.id}}" name = "listing_id">
+                            <input id = "submit_button" type = "SUBMIT" class = "btn btn-success" value = "Add to Watch List">
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <hr style = "border-top: 1.5px solid">
+
+ 
+
+
+
+
+        <div class = "image_grid watchlist">
+            <div class = "image_box">
+                <a href = "{% url 'listing' listing.id %}"><img class = "index_image" src = '{{listing.url}}' onerror = 'this.onerror=null;this.src = "static/auctions/not_available.png"'></a>
+            </div>
+            <div class = "text-center">
+                
+            </div>
+            
+            <div class = "index_price">Starting at ${{listing.start_bid}}</div>
+        </div>
     {% empty %}
     <p>There are no items on your watchlist.</p>
     {% endfor %}
@@ -19,3 +62,10 @@ Watchlist
 
 
 {% endblock %}
+
+
+
+
+    
+
+   

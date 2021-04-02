@@ -62,12 +62,13 @@
         </form>
     </div>
 
+    
+{% endif %}
     <h3>
         <div style = "padding-top: 40px; padding-bottom: 20px; border-bottom: solid 0.2px lightgray ">
             Comments
         </div>   
     </h3>
-{% endif %}
     <div class = "comments">
     {% for comment in comments %}
     <div class = "left-padding" style = "margin: 30px">
@@ -97,7 +98,7 @@
     owner_status = {{owner_status}}
     watching_status = {{watching_status}}
     listing_status = "{{listing.status}}";
-    $("#id_bid").addClass("form-control form-group col-xs-2 bid_input left-padding");
+    $("#id_bid").addClass("form-control form-group col-xs-2 bid_input");
     $("#close_button").hide();
     $("form > div > div > textarea").addClass("form-control");
     $("#id_bid").parent().append("<span>$</span>").addClass('input_container')

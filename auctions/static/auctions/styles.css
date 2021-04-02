@@ -19,11 +19,7 @@ a.dropdown-item.text-white:hover {
     margin-bottom: 10px;
 }
 
-.form-group {
-    width: 50%;
-}
-
-.col-xs-2.form-group {
+div.col-xs-2.form-group {
     width: 130px;
 }
 
@@ -65,8 +61,11 @@ ul.nav {
     width: 25%;
     height: 250px;
     padding: 20px;
+    text-align: left;
+}
 
-    text-align: center;
+.image_grid.watchlist {
+    width: 100%;
 }
 .image_box {
     width: 100%;
@@ -91,6 +90,15 @@ a.categories:hover {
     text-decoration: none;
 }
 
+.index_title.watchlist {
+    font-size: 20px;
+    font-weight: 650;
+    text-align: left;
+}
+
+.container.watchlist{
+    margin: 0px;
+}
 div.index_price {
     color: red;
     font-size: 12px;
@@ -119,7 +127,9 @@ img.index_image.categories {
 
 
 
-
+a:hover {
+    text-decoration: none;
+}
 
 .image_box.categories {
     height: 300px; 
