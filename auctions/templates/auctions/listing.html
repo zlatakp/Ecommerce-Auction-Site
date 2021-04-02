@@ -3,7 +3,9 @@
 {% block pagetitle %}
 {{listing.title}}
 {% endblock %}
+
 {% block body %}
+<div class = 'listing'>
 {% if listing.status == 'inactive' %}
     <div class = 'text-center alert alert-secondary' role = 'alert'>
         The bidding on this item is closed.
@@ -15,21 +17,21 @@
 {% endif %}
 {% endif %}
 
-<div class = "left-padding">
-<p class = "start_bid">Starting at {{start_bid}}</p>
-<p class = "current_bid">Current bid: {{current_bid}}</p>
+<div>
+<p style = "margin-bottom: 0px">Starting at {{start_bid}}</p>
+<i><p  style = "color: red">Current bid: {{current_bid}}</p></i>
 {% if user.is_authenticated %}
     <form id = "bid_form" action = "{% url 'bid' listing.id %}" method = "POST">
         {% csrf_token %}
-        <div class = "row" id = "row">
-            <div class = "col-xs-2 form-group form_div" id = "bid_div">
+        <div class = "row listing" id = "row">
+            <div class = "col-xs-2 form-group" id = "bid_div">
                 {% for field in form %}
                     {{field.label}} {{field}}
                 {% endfor %}
             </div>
-            <div class = "col-xs-2 form-group form_div">
+            <div class = "col-xs-2 form-group" style = "padding-left: 5px">
                 <br>
-                <input type = "SUBMIT" class = "btn btn-primary" value = "Bid">
+                <input type = "SUBMIT"  class = "btn btn-primary" value = "Bid" id = "bid_btn">
             </div>
         </div>
     </form>
@@ -37,14 +39,14 @@
 {% if listing.url != "" %}
     <img class = "listing_image" src = "{{listing.url}}" alt = "Listing Image">
 {% endif %}
-<div class = "form-div">
+<div class = "width_50">
     <p>{{listing.description}}</p>
 </div>
 
 
 
 {% if user.is_authenticated %}
-    <div class = "form_div">
+    <div class = 'form_field'>
         <form id = "form" action = "{% url 'add' listing.id %}" method = "POST">
             {% csrf_token %}
             <input type = "hidden" value = "{{listing.id}}" name = "listing_id">
@@ -52,7 +54,7 @@
         </form>
     </div>
 
-    <div class = "form_div">
+    <div class = 'form_field'>
         <form id = "closebid" action ="{% url 'index' %}" method = "POST">
             {% csrf_token %}
             <input name = "list_id" type = "hidden" value = "{{listing.id}}">
@@ -65,6 +67,7 @@
             Comments
         </div>   
     </h3>
+{% endif %}
     <div class = "comments">
     {% for comment in comments %}
     <div class = "left-padding" style = "margin: 30px">
@@ -74,7 +77,8 @@
     </div>
     {% endfor %}
     </div>
-    <div class = "left-padding" style = "margin: 30px">
+{% if user.is_authenticated %}
+    <div style = "margin: 30px">
     <form id = "comment_form" action = "{% url 'listing' listing.id %}" method = "POST">
         {% csrf_token %}
         <div class = "form-group">
@@ -85,19 +89,20 @@
         </div>
         <input type = "SUBMIT" id = "post_comment" class = "btn btn-primary" value = "Post Comment">            
     </form>
-</div>
-    
-
+    </div>
 {% endif %}
+</div>
 </div>
 <script>
     owner_status = {{owner_status}}
     watching_status = {{watching_status}}
     listing_status = "{{listing.status}}";
-    $("#id_bid").addClass("form-control form-group form-div col-xs-2 bid_input left-padding");
+    $("#id_bid").addClass("form-control form-group col-xs-2 bid_input left-padding");
     $("#close_button").hide();
     $("form > div > div > textarea").addClass("form-control");
-    
+    $("#id_bid").parent().append("<span>$</span>").addClass('input_container')
+    $("#id_bid").css({"padding-left":"1.35rem"})
+    $('div > span').addClass('sign_listing sign')
     $(document).ready(function() {
         
         if (watching_status) {
@@ -119,3 +124,4 @@
 </script>
 
 {% endblock %}
+

@@ -3,6 +3,10 @@ body {
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
+.listing {
+    padding-left: 15px;
+}
+
 a.dropdown-item.text-white:hover {
     
 }
@@ -17,6 +21,10 @@ a.dropdown-item.text-white:hover {
 
 .form-group {
     width: 50%;
+}
+
+.col-xs-2.form-group {
+    width: 130px;
 }
 
 h2.page_title {
@@ -41,6 +49,7 @@ div.dropdown-menu{
 
 main {
     padding-left: 40px;
+    margin-bottom: 150px;
 }
 
 a.navbar-brand {
@@ -67,7 +76,6 @@ ul.nav {
 .listing_image {
     width: 300px;
     height: auto;
-
 }
 
 img.index_image {
@@ -90,9 +98,13 @@ div.index_price {
 }
 
 
+
 .image_grid.categories {
-    width: 50%;
     height: 340px;
+}
+
+.width_50 {
+    width: 50%;
 }
 
 
@@ -141,6 +153,10 @@ div.categories_title:hover {
     font-size: 1rem;
     top: 31.5px;
     left: 28.1px;
+}
+
+.sign.sign_listing {
+    left: 14px;
 }
 
 a.nav-link.dropdown-item:active{

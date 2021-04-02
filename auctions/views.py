@@ -89,15 +89,21 @@ def listing(request, list_id):
     else:
         listing = Listing.objects.get(id = list_id)
         bid = Bid.objects.get(listing = listing)
-        user = User.objects.get(id = request.user.id)
-        owner_status = listing.owner == user
-        watching_status = user.watchedby.filter(id = list_id).exists()
+        won = False
+        if request.user.id:
+            user = User.objects.get(id = request.user.id)
+            owner_status = listing.owner == user
+            watching_status = user.watchedby.filter(id = list_id).exists()
+            if listing.winner == user:
+                won = True
+        else:
+            owner_status = False
+            watching_status = False
         form = NewBid(current_min = bid.current_bid)
         comments = Comment.objects.filter(listing = listing)
         comment_form = NewComment()
-        won = False
-        if listing.winner == user:
-            won = True
+        
+        
         return render(request, "auctions/listing.html", {
             "owner_status": str(owner_status).lower(),
             "form": form,
