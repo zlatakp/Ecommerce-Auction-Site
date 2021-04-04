@@ -43,6 +43,7 @@ div.dropdown-menu{
     font-size: 14px;
 }
 
+
 main {
     padding-left: 40px;
     margin-bottom: 150px;
@@ -61,7 +62,7 @@ ul.nav {
     width: 25%;
     height: 250px;
     padding: 20px;
-    text-align: left;
+    text-align: center;
 }
 
 .image_grid.watchlist {
@@ -125,6 +126,14 @@ img.index_image.categories {
     opacity: 0.6;
 }
 
+div.subtext.row {
+    padding-left: 7px;
+}
+.watchlist_icon {
+    display: inline;
+    height: 12px;
+    width: auto;
+}
 
 
 a:hover {

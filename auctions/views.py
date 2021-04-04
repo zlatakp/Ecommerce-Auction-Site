@@ -161,6 +161,7 @@ def watchlist(request):
         user = User.objects.get(id = request.user.id)
         watchlist = user.watchedby.filter(status = 'active')
         return render(request, "auctions/watchlist.html", {
+            
             "watchlist": watchlist
         })
 
