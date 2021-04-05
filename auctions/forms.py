@@ -1,7 +1,7 @@
 from django import forms
 from .models import Category
 class NewListing(forms.Form):
-    categories = list(Category.objects.values_list('name', 'name'))
+    categories = list(Category.objects.values_list('id', 'name'))
     title = forms.CharField(label = "Title", max_length = 100, required = True)
     start_bid = forms.DecimalField(label = "Starting Bid", decimal_places = 2, required = True, widget = forms.NumberInput(attrs={'placeholder': '0.00'}))
     category = forms.ChoiceField(widget = forms.Select, choices = categories, label = "Category")

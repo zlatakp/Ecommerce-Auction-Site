@@ -17,27 +17,32 @@ Watchlist
                 </div>
             </div>
             <div class = "subtext row">
-                <div class = 'col'>
+                <div class = 'col' style = "margin-bottom: 10px;">
                     <img class = 'watchlist_icon' src = '/static/auctions/watchlist.png'><i style = "font-size: 10px;">
-                        {{ listing.watched.all|length|add:"-1" }} other 
+                        
                         {% if listing.watched.all|length|add:"-1" > 1 %} 
-                        users are 
+                        {{ listing.watched.all|length|add:"-1" }} other users are watching this item.
+                        {% elif listing.watched.all|length|add:"-1" == 0 %}
+                        No one else is watching this item.
                         {% else %}
-                        user is
+                        {{ listing.watched.all|length|add:"-1"}} other user is watching this item.
                         {% endif %}
-                        watching this item.
+
                     </i>
                 </div>
             </div>
             <div class = "subtext row">
-                <div class = 'col-3'>
+                <div class = 'col-3' style = "height: 150px">
                     <a href = "{% url 'listing' listing.id %}"><img class = "index_image" src = '{{listing.url}}' onerror = 'this.onerror=null;this.src = "static/auctions/not_available.png"'></a>
                 </div>
                 <div class = 'col'>
-                    ${{listing.start_bid}}
+                    <div class ="text-center" style = "margin-top: 29.8px; color: red; font-size:large">
+                        Current bid: ${{listing.current_bid}}
+                    </div>
+                    
                 </div>
                 <div class = 'col'>
-                    <div class = 'form_field text-right' style = "margin-top:41px">
+                    <div class = 'form_field text-right' style = "margin-top:24px">
                         <form id = "form" action = "{% url 'remove' listing.id %}" method = "POST">
                             {% csrf_token %}
                             <input type = "hidden" value = "{{listing.id}}" name = "listing_id">
@@ -57,12 +62,6 @@ Watchlist
 <p> Log in to view your watchlist.</p>
 {% endif %}
 </div>
-
-<script>
-    users = 
-</script>
-
-
 {% endblock %}
 
 

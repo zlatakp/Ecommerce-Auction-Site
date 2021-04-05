@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .models import User, Category, Listing, Bid, Comment
 from datetime import datetime
+from django.utils import timezone
 from .forms import NewListing, NewBid, NewComment
 
 def login_view(request):
@@ -59,7 +60,7 @@ def create_new(request):
             category = Category.objects.get(id = category_id)
             url = form.cleaned_data["url"]
             owner = User.objects.get(id = request.user.id)
-            listing = Listing(title = title, owner = owner, start_bid = start_bid, url = url, description = description, category = category)
+            listing = Listing(title = title, owner = owner, start_bid = start_bid, current_bid = start_bid,  url = url, description = description, category = category)
             listing.save()
             bid = Bid(listing = listing, current_bid = start_bid)
             bid.save()
@@ -86,6 +87,9 @@ def bid(request, list_id):
             if bidded > current_bid:
                 user = User.objects.get(id = request.user.id)
                 Bid.objects.filter(listing = listing).update(current_bid = bidded, bidder = user)  
+                Listing.objects.filter(id = list_id).update(current_bid = bidded)  
+                
+                
                 watching_status = user.watchedby.filter(id = list_id).exists()
                 return HttpResponseRedirect(reverse('listing', args = (list_id, )))
     return HttpResponseRedirect(reverse("listing", args = (list_id,)))
@@ -98,7 +102,7 @@ def listing(request, list_id):
             text = comment_form.cleaned_data['text']
             listing = Listing.objects.get(id = list_id)
             user = User.objects.get(id = request.user.id)
-            time = datetime.now()
+            time = datetime.now(tz=timezone.utc)
             new_comment = Comment(text = text, listing = listing, user = user, time = time)
             new_comment.save()
         else:
@@ -189,6 +193,19 @@ def won(request):
         "title": "Won Auctions",
         "listings": listings
     })
+
+
+@login_required 
+def posted(request):
+    user  = User.objects.get(id = request.user.id)
+    listings = user.owned.all()
+    return render(request, "auctions/index.html", {
+        "title": "Posted Auctions",
+        "listings": listings
+    })
+
+
+
 
 
 

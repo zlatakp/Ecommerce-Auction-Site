@@ -20,18 +20,19 @@ class User(AbstractUser):
 class Listing(models.Model):
     status_choice = [('active','active'), ('inactive','inactive')]
     winner = models.ForeignKey(User, on_delete = models.SET_DEFAULT, null = True, default = None, related_name = 'wonitems')
-    
     status = models.CharField(max_length = 10, choices = status_choice, default = 'active')
     title = models.CharField(max_length = 100)
     start_bid = models.DecimalField(decimal_places=2, max_digits = 1000000)
+    current_bid = models.DecimalField(default = 0.00, decimal_places = 2, max_digits=100000)
+    
     url = models.CharField(max_length = 200, blank = True)
     description = models.CharField(max_length = 200, default = "")
     category = models.ForeignKey(Category, on_delete = models.CASCADE, related_name = "category_listing", default  = "")
     watched = models.ManyToManyField(User, related_name = "watchedby", blank = True)
-    owner = models.ForeignKey(User, on_delete = models.CASCADE, null = True, blank = True)
+    owner = models.ForeignKey(User, on_delete = models.CASCADE, null = True, blank = True, related_name = "owned")
     def __str__(self):
         return f"{self.title} starting at ${self.start_bid} posted by {self.owner}."
-
+    
 
 class Bid(models.Model):
     listing = models.ForeignKey(Listing, on_delete = models.CASCADE, related_name = "same_start_bid", default = "")

@@ -25,18 +25,15 @@
             </li>
             {% if user.is_authenticated %}
                 <li class = "nav-item">
-                    <a class = "nav-link" href = "{% url 'watchlist' %}">Watchlist</a>
-                </li>
-                <li class = "nav-item">
-                    <a class = "nav-link" href = "{% url 'won_auctions' %}">Won Auctions</a>
-                </li>
-                <li class = "nav-item">
                     <a class = "nav-link" href = "{% url 'newlisting' %}">Create a New Listing</a>
                 </li>
                 <li class="nav-item dropdown_head">
                     <div class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Signed in as {{ user.username }}</a>
                         <div class="dropdown-menu">
+                            <a class = "nav-link dropdown-item" href = "{% url 'watchlist' %}">Watchlist</a>
+                            <a class = "nav-link dropdown-item" href = "{% url 'posted_auctions' %}">Posted Auctions</a>
+                            <a class = "nav-link dropdown-item" href = "{% url 'won_auctions' %}">Won Auctions</a>
                             <a class="nav-link dropdown-item" href="{% url 'login' %}">Sign in with a different account</a>
                             <a class="nav-link dropdown-item" href="{% url 'logout' %}">Log Out</a>
                         </div>
